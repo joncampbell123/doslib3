@@ -78,6 +78,18 @@ if test $c11 = 0; then
     AC_MSG_ERROR([This code base requires a C++11 capable compiler])
 fi
 
+# debug
+AC_ARG_ENABLE(debug,AS_HELP_STRING([--enable-debug],[Enable debug information]),[ENABLE_DEBUG=$enableval],[ENABLE_DEBUG=no])
+AC_SUBST(ENABLE_DEBUG)
+
+# debug messages
+AC_ARG_ENABLE(debug-msg,AS_HELP_STRING([--enable-debug-msg],[Enable debug code in the libraries]),[ENABLE_DEBUG_MSG=$enableval],[ENABLE_DEBUG_MSG=no])
+AC_SUBST(ENABLE_DEBUG_MSG)
+
+# stack checking
+AC_ARG_ENABLE(stack-check,AS_HELP_STRING([--enable-stack-check],[Enable stack checking (default)]),[ENABLE_STACK_CHECK=$enableval],[ENABLE_STACK_CHECK=yes])
+AC_SUBST(ENABLE_STACK_CHECK)
+
 # Open Watcom
 HAVE_OPENWATCOM=0
 WATCOM_ROOT=
@@ -124,7 +136,35 @@ if test "$HAVE_OPENWATCOM" = 1; then
     WATCOM_CC32="$WATCOM_ENV wcc386 -e=2 -zq -oilrtm -wx -q";
     WATCOM_WLINK="$WATCOM_ENV wlink";
     WATCOM_WASM="$WATCOM_ENV wasm";
-    WATCOM_RC="$WATCOM_ENV wrc"
+    WATCOM_RC="$WATCOM_ENV wrc";
+
+    if test "$ENABLE_DEBUG_MSG" = yes; then
+        WATCOM_WASM+=" -dDOSLIB_DEBUG_MSG=1";
+        WATCOM_CC16+=" -dDOSLIB_DEBUG_MSG=1";
+        WATCOM_CC32+=" -dDOSLIB_DEBUG_MSG=1";
+        WATCOM_RC+=" -DDOSLIB_DEBUG_MSG=1";
+    fi
+
+    if test "$ENABLE_DEBUG" = yes; then
+        # full debug, browse, stack frames
+        WATCOM_CC16+=" -d9 -db -of+";
+        WATCOM_CC32+=" -d9 -db -of+";
+    else
+        # no debug info, no stack frames
+        WATCOM_CC16+=" -d0";
+        WATCOM_CC32+=" -d0";
+    fi
+
+    if test "$ENABLE_STACK_CHECK" = yes; then
+        # stack frames
+        WATCOM_CC16+=" -of+";
+        WATCOM_CC32+=" -of+";
+    else
+        # disable stack checking
+        WATCOM_CC16+=" -s";
+        WATCOM_CC32+=" -s";
+    fi
+
     AC_MSG_RESULT([yes: $WATCOM_ROOT])
 else
     AC_MSG_RESULT([no])
