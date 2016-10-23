@@ -81,7 +81,7 @@ fi
 # Open Watcom
 HAVE_OPENWATCOM=0
 WATCOM_ROOT=
-AC_ARG_WITH(openwatcom,AS_HELP_STRING([--with-openwatcom],[Use Open Watcom C]),[],[with_openwatcom=yes])
+AC_ARG_WITH(openwatcom,AS_HELP_STRING([--with-openwatcom],[Use Open Watcom C]),[with_openwatcom=$withval],[with_openwatcom=yes])
 AC_SUBST(HAVE_OPENWATCOM)
 AC_SUBST(WATCOM_ROOT)
 AC_SUBST(WATCOM_EDPATH)
@@ -91,36 +91,45 @@ AC_SUBST(WATCOM_ENV)
 AC_SUBST(WATCOM_CC16)
 AC_SUBST(WATCOM_CC32)
 AC_SUBST(WATCOM_WLINK)
+AC_SUBST(WATCOM_WASM)
+AC_SUBST(WATCOM_RC)
+AC_MSG_CHECKING([for openwatcom])
 if test "$with_openwatcom" = "yes"; then
-    AC_MSG_CHECKING([for openwatcom])
-
     dnl TODO: If Windows host, path needs to use ;
     dnl       Else (Linux and Mac OS X) use :
     for i in \
         /usr/src/open-watcom-v2/rel \
         /usr/watcom \
         /usr/watcom-1.9 \
-        /usr/watcom-1.8; do \
-        if [[ -x "$i/binl/wcc" ]]; then \
-            HAVE_OPENWATCOM=1; \
-            WATCOM_ROOT=$i; \
-            WATCOM_EDPATH="$i/eddat"; \
-            WATCOM_PATH="$i/binl:$i/binw"; \
-            WATCOM_INCLUDE="$i/h/nt;$i/h/nt/directx;$i/h/nt/ddk;$i/h"; \
-            WATCOM_ENV="env \"EDPATH=\$(WATCOM_EDPATH)\" \"PATH=\$(WATCOM_PATH):\$(PATH)\" \"INCLUDE=\$(WATCOM_INCLUDE)\""; \
-            WATCOM_CC16="$WATCOM_ENV wcc -e=2 -zq -oilrtfm -wx -q"; \
-            WATCOM_CC32="$WATCOM_ENV wcc386 -e=2 -zq -oilrtfm -wx -q"; \
-            WATCOM_WLINK="$WATCOM_ENV wlink"; \
-            break; \
-        fi; \
+        /usr/watcom-1.8; do
+        if [[ -x "$i/binl/wcc" ]]; then
+            HAVE_OPENWATCOM=1;
+            WATCOM_ROOT=$i;
+            break;
+        fi;
     done
-
-    if test "$HAVE_OPENWATCOM" = 1; then
-        AC_MSG_RESULT([yes: $WATCOM_ROOT])
-    else
-        AC_MSG_RESULT([no])
+elif test -n "$with_openwatcom"; then
+    if [[ -x "$with_openwatcom/binl/wcc" ]]; then
+        HAVE_OPENWATCOM=1;
+        WATCOM_ROOT=$with_openwatcom;
     fi
 fi
+
+if test "$HAVE_OPENWATCOM" = 1; then
+    WATCOM_EDPATH="$i/eddat";
+    WATCOM_PATH="$i/binl:$i/binw";
+    WATCOM_INCLUDE="$i/h/nt;$i/h/nt/directx;$i/h/nt/ddk;$i/h";
+    WATCOM_ENV="env \"EDPATH=\$(WATCOM_EDPATH)\" \"PATH=\$(WATCOM_PATH):\$(PATH)\" \"INCLUDE=\$(WATCOM_INCLUDE)\"";
+    WATCOM_CC16="$WATCOM_ENV wcc -e=2 -zq -oilrtm -wx -q";
+    WATCOM_CC32="$WATCOM_ENV wcc386 -e=2 -zq -oilrtm -wx -q";
+    WATCOM_WLINK="$WATCOM_ENV wlink";
+    WATCOM_WASM="$WATCOM_ENV wasm";
+    WATCOM_RC="$WATCOM_ENV wrc"
+    AC_MSG_RESULT([yes: $WATCOM_ROOT])
+else
+    AC_MSG_RESULT([no])
+fi
+
 AC_DEFINE_UNQUOTED([HAVE_OPENWATCOM],[$HAVE_OPENWATCOM],[Has OPENWATCOM])
 AM_CONDITIONAL([HAVE_OPENWATCOM],[test $HAVE_OPENWATCOM = 1])
 
