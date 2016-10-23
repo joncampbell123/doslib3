@@ -113,7 +113,11 @@ AC_SUBST(WATCOM_ENV)
 AC_SUBST(WATCOM_CC16)
 AC_SUBST(WATCOM_CC32)
 AC_SUBST(WATCOM_WLINK)
+AC_SUBST(WATCOM_STRIP)
+AC_SUBST(WATCOM_BIND)
 AC_SUBST(WATCOM_WASM)
+AC_SUBST(WATCOM_MAKE)
+AC_SUBST(WATCOM_WLIB)
 AC_SUBST(WATCOM_RC)
 AC_MSG_CHECKING([for openwatcom])
 if test "$with_openwatcom" = "yes"; then
@@ -144,9 +148,13 @@ if test "$HAVE_OPENWATCOM" = 1; then
     WATCOM_ENV="env \"EDPATH=\$(WATCOM_EDPATH)\" \"PATH=\$(WATCOM_PATH):\$(PATH)\" \"INCLUDE=\$(WATCOM_INCLUDE)\"";
     WATCOM_CC16="$WATCOM_ENV wcc -e=2 -zq -oilrtm -wx -q";
     WATCOM_CC32="$WATCOM_ENV wcc386 -e=2 -zq -oilrtm -wx -q";
-    WATCOM_WLINK="$WATCOM_ENV wlink";
-    WATCOM_WASM="$WATCOM_ENV wasm";
-    WATCOM_RC="$WATCOM_ENV wrc";
+    WATCOM_WLINK="$WATCOM_ENV wlink option quiet";
+    WATCOM_MAKE="$WATCOM_ENV wmake -h -e";
+    WATCOM_STRIP="$WATCOM_ENV wstrip -q";
+    WATCOM_BIND="$WATCOM_ENV wbind -q";
+    WATCOM_WASM="$WATCOM_ENV wasm -zq";
+    WATCOM_WLIB="$WATCOM_ENV wlib -q";
+    WATCOM_RC="$WATCOM_ENV wrc -q";
 
     if test "$ENABLE_DEBUG_MSG" = yes; then
         WATCOM_WASM+=" -dDOSLIB_DEBUG_MSG=1";
