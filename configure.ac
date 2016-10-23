@@ -120,6 +120,7 @@ AC_SUBST(WATCOM_WASM)
 AC_SUBST(WATCOM_MAKE)
 AC_SUBST(WATCOM_WLIB)
 AC_SUBST(WATCOM_RC)
+AC_SUBST(BUILDDIR)
 AC_MSG_CHECKING([for openwatcom])
 if test "$with_openwatcom" = "yes"; then
     dnl TODO: If Windows host, path needs to use ;
@@ -195,6 +196,9 @@ else
     AC_MSG_RESULT([no])
 	AC_MSG_ERROR([Open Watcom C is required to build this source code])
 fi
+
+# note builddir
+BUILDDIR="\$(abs_top_builddir)/build"
 
 # we also want -Wall
 AC_MSG_CHECKING([support for -Wall])
