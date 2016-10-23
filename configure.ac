@@ -191,10 +191,8 @@ if test "$HAVE_OPENWATCOM" = 1; then
     AC_MSG_RESULT([yes: $WATCOM_ROOT])
 else
     AC_MSG_RESULT([no])
+	AC_MSG_ERROR([Open Watcom C is required to build this source code])
 fi
-
-AC_DEFINE_UNQUOTED([HAVE_OPENWATCOM],[$HAVE_OPENWATCOM],[Has OPENWATCOM])
-AM_CONDITIONAL([HAVE_OPENWATCOM],[test $HAVE_OPENWATCOM = 1])
 
 # we also want -Wall
 AC_MSG_CHECKING([support for -Wall])
@@ -326,16 +324,22 @@ AC_CHECK_DECLS([isinf, isnan],[],[],[[#include <math.h>]])
 AC_CHECK_DECLS([le16toh, le32toh],[],[],[[#include <endian.h>]])
 
 # we use yasm
-AC_SUBST(HAVE_YASM)
-AC_CHECK_PROG([HAVE_YASM],[yasm],[1],[0])
-AM_CONDITIONAL([HAVE_YASM],[test $HAVE_YASM = 1])
-AC_DEFINE_UNQUOTED([HAVE_YASM],[$HAVE_YASM],[Has YASM])
+AC_CHECK_PROGS(YASM,$YASM yasm,error)
+if test x"$YASM" = x"error"; then
+	AC_MSG_ERROR([Yasm is required to build this source code])
+fi
+
+# we need Perl
+AC_CHECK_PROGS(PERL,$PERL perl,error)
+if test x"$PERL" = x"error"; then
+	AC_MSG_ERROR([Perl is required to build this source code])
+fi
 
 # we use pkg-config
-AC_SUBST(HAVE_PKGCONFIG)
-AC_CHECK_PROG([HAVE_PKGCONFIG],[pkg-config],[1],[0])
-AM_CONDITIONAL([HAVE_PKGCONFIG],[test $HAVE_PKGCONFIG = 1])
-AC_DEFINE_UNQUOTED([HAVE_PKGCONFIG],[$HAVE_PKGCONFIG],[Has pkg-config])
+AC_CHECK_PROGS(PKGCONFIG,$PKGCONFIG pkg-config,error)
+if test x"$PKGCONFIG" = x"error"; then
+	AC_MSG_ERROR([pkg-config is required to build this source code])
+fi
 
 # autoconf script provides "target_alias"
 # what OS are we targeting?
