@@ -87,6 +87,10 @@ AC_SUBST(WATCOM_ROOT)
 AC_SUBST(WATCOM_EDPATH)
 AC_SUBST(WATCOM_PATH)
 AC_SUBST(WATCOM_INCLUDE)
+AC_SUBST(WATCOM_ENV)
+AC_SUBST(WATCOM_CC16)
+AC_SUBST(WATCOM_CC32)
+AC_SUBST(WATCOM_WLINK)
 if test "$with_openwatcom" = "yes"; then
     AC_MSG_CHECKING([for openwatcom])
 
@@ -103,6 +107,10 @@ if test "$with_openwatcom" = "yes"; then
             WATCOM_EDPATH="$i/eddat"; \
             WATCOM_PATH="$i/binl:$i/binw"; \
             WATCOM_INCLUDE="$i/h/nt;$i/h/nt/directx;$i/h/nt/ddk;$i/h"; \
+            WATCOM_ENV="env \"EDPATH=\$(WATCOM_EDPATH)\" \"PATH=\$(WATCOM_PATH):\$(PATH)\" \"INCLUDE=\$(WATCOM_INCLUDE)\""; \
+            WATCOM_CC16="$WATCOM_ENV wcc -e=2 -zq -oilrtfm -wx -q"; \
+            WATCOM_CC32="$WATCOM_ENV wcc386 -e=2 -zq -oilrtfm -wx -q"; \
+            WATCOM_WLINK="$WATCOM_ENV wlink"; \
             break; \
         fi; \
     done
