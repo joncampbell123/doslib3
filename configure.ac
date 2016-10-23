@@ -341,6 +341,12 @@ if test x"$PERL" = x"error"; then
 	AC_MSG_ERROR([Perl is required to build this source code])
 fi
 
+# we need GNU iconv
+AC_CHECK_PROGS(ICONV,$ICONV iconv,error)
+if test x"$ICONV" = x"error"; then
+	AC_MSG_ERROR([iconv is required to build this source code])
+fi
+
 # we use pkg-config
 AC_CHECK_PROGS(PKGCONFIG,$PKGCONFIG pkg-config,error)
 if test x"$PKGCONFIG" = x"error"; then
