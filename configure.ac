@@ -90,6 +90,16 @@ AC_SUBST(ENABLE_DEBUG_MSG)
 AC_ARG_ENABLE(stack-check,AS_HELP_STRING([--enable-stack-check],[Enable stack checking (default)]),[ENABLE_STACK_CHECK=$enableval],[ENABLE_STACK_CHECK=yes])
 AC_SUBST(ENABLE_STACK_CHECK)
 
+# work harder to optimize
+AC_ARG_ENABLE(expensive-opts,AS_HELP_STRING([--enable-expensive-opts],[Enable expensive optimizations (default)]),[ENABLE_EXPENSIVE_OPTS=$enableval],[ENABLE_EXPENSIVE_OPTS=yes])
+AC_SUBST(ENABLE_EXPENSIVE_OPTS)
+
+# GCC also supports expensive optimizations
+if test "$ENABLE_EXPENSIVE_OPTS" = yes; then
+    CFLAGS+=" -fexpensive-optimizations";
+    CXXFLAGS+=" -fexpensive-optimizations";
+fi
+
 # Open Watcom
 HAVE_OPENWATCOM=0
 WATCOM_ROOT=
@@ -146,23 +156,28 @@ if test "$HAVE_OPENWATCOM" = 1; then
     fi
 
     if test "$ENABLE_DEBUG" = yes; then
-        # full debug, browse, stack frames
-        WATCOM_CC16+=" -d9 -db -of+";
-        WATCOM_CC32+=" -d9 -db -of+";
+        # full debug, browse
+        WATCOM_CC16+=" -d9 -db";
+        WATCOM_CC32+=" -d9 -db";
     else
-        # no debug info, no stack frames
+        # no debug info
         WATCOM_CC16+=" -d0";
         WATCOM_CC32+=" -d0";
     fi
 
     if test "$ENABLE_STACK_CHECK" = yes; then
         # stack frames
-        WATCOM_CC16+=" -of+";
-        WATCOM_CC32+=" -of+";
+        WATCOM_CC16+=" -of";
+        WATCOM_CC32+=" -of";
     else
         # disable stack checking
         WATCOM_CC16+=" -s";
         WATCOM_CC32+=" -s";
+    fi
+
+    if test "$ENABLE_EXPENSIVE_OPTS" = yes; then
+        WATCOM_CC16+=" -oh";
+        WATCOM_CC32+=" -oh";
     fi
 
     AC_MSG_RESULT([yes: $WATCOM_ROOT])
