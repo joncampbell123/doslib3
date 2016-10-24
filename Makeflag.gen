@@ -8,6 +8,20 @@ print TGT "WATCOM_DOSLIB_INCLUDE=-i\$\(abs_top_srcdir\)\n";
 
 print TGT "\n";
 
+# macro
+print TGT "# \$\(call WATCOM_DOSLIB_CFLAGS16,platform,cpu,model\)\n";
+print TGT "WATCOM_DOSLIB_CFLAGS16 = \$\(WATCOM_DOSLIB_CFLAGS16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_LDFLAGS16 = \$\(WATCOM_DOSLIB_LDFLAGS16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_BUILDDIR16 = \$\(WATCOM_DOSLIB_BUILDDIR16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "\n";
+
+# macro
+print TGT "# \$\(call WATCOM_DOSLIB_CFLAGS32,platform,cpu,model\)\n";
+print TGT "WATCOM_DOSLIB_CFLAGS32 = \$\(WATCOM_DOSLIB_CFLAGS32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_LDFLAGS32 = \$\(WATCOM_DOSLIB_LDFLAGS32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_BUILDDIR32 = \$\(WATCOM_DOSLIB_BUILDDIR32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "\n";
+
 # DOS targets (PC and PC-98)
 foreach my $plat (qw(dos pc98)) {
     # CPUs
