@@ -35,4 +35,5 @@
 # anything built
 build
 build/*
+Makeflag.tgt
 

@@ -1005,6 +1005,13 @@ fi
 AC_DEFINE_UNQUOTED([HAVE_CAIRO],[$HAVE_CAIRO],[Has CAIRO])
 AM_CONDITIONAL([HAVE_CAIRO],[test $HAVE_CAIRO = 1])
 
+# FIXME: correct src vs build dir?
+./Makeflag.gen; X=$?
+if test "$X" != 0; then
+    AC_MSG_ERROR([Makeflag.gen failed])
+    exit 1
+fi
+
 AC_CONFIG_FILES(Makefile)
 AC_OUTPUT
 

@@ -1,0 +1,78 @@
+#!/usr/bin/perl
+
+print "Generating Makeflag.tgt\n";
+
+open(TGT,">Makeflag.tgt") || die;
+
+print TGT "WATCOM_DOSLIB_INCLUDE=-i\$\(abs_top_srcdir\)\n";
+
+print TGT "\n";
+
+# DOS targets (PC and PC-98)
+foreach my $plat (qw(dos pc98)) {
+    # CPUs
+    foreach my $cpu ((8086,286,386,486,586,686)) {
+        my $singledigit = int($cpu / 100)+0;
+        $singledigit = 0 if $singledigit == 80; # FIXME: Didn't I make it an int?
+
+        # memory models
+        foreach my $model (qw(c s m l h)) {
+            # 16-bit
+            $CFLAGS="-bt=dos -m$model -DMMODE=$model -DDOSLIB_TARGET_MSDOS=1 -DDOSLIB_TARGET_BITS=16 -DDOSLIB_CPU_TARGET=$singledigit -$singledigit \$\(WATCOM_DOSLIB_INCLUDE\)";
+            $LDFLAGS="system dos";
+
+            # fpu
+            if ($singledigit >= 6) { $CFLAGS.=" -fp6 -fpi"; }
+            elsif ($singledigit >= 5) { $CFLAGS.=" -fp5 -fpi"; }
+            elsif ($singledigit >= 3) { $CFLAGS.=" -fp3 -fpi"; }
+            elsif ($singledigit >= 2) { $CFLAGS.=" -fp2 -fpi"; }
+            else { $CFLAGS.=" -fpi"; }
+
+            # need -zu for large and compact models
+            $CFLAGS.=" -zu" if ($model eq "l" || $model eq "c");
+
+            # need to say so if PC-98
+            $CFLAGS.=" -DDOSLIB_TARGET_PC98=1" if $plat eq "pc98";
+
+            # emit it
+            print TGT "WATCOM_DOSLIB_CFLAGS16_".$plat."_".$cpu."_".$model." = $CFLAGS\n";
+            print TGT "WATCOM_DOSLIB_LDFLAGS16_".$plat."_".$cpu."_".$model." = $LDFLAGS\n";
+            print TGT "WATCOM_DOSLIB_BUILDDIR16_".$plat."_".$cpu."_".$model." = \$\(BUILDDIR\)/$plat/16/$cpu/$model\n";
+
+            print TGT "\n";
+        }
+    }
+
+    print TGT "\n";
+
+    foreach my $cpu ((386,486,586,686)) {
+        my $singledigit = int($cpu / 100)+0;
+
+        # memory models
+        foreach my $model (qw(f)) {
+            # 32-bit
+            $CFLAGS="-bt=dos -m$model -DMMODE=$model -DDOSLIB_TARGET_MSDOS=1 -DDOSLIB_TARGET_BITS=32 -DDOSLIB_CPU_TARGET=$singledigit -$singledigit \$\(WATCOM_DOSLIB_INCLUDE\)";
+            $LDFLAGS="system dos4g";
+
+            # fpu
+            if ($singledigit >= 6) { $CFLAGS.=" -fp6 -fpi"; }
+            elsif ($singledigit >= 5) { $CFLAGS.=" -fp5 -fpi"; }
+            else { $CFLAGS.=" -fp3 -fpi"; }
+
+            # need to say so if PC-98
+            $CFLAGS.=" -DDOSLIB_TARGET_PC98=1" if $plat eq "pc98";
+
+            # emit it
+            print TGT "WATCOM_DOSLIB_CFLAGS32_".$plat."_".$cpu."_".$model." = $CFLAGS\n";
+            print TGT "WATCOM_DOSLIB_LDFLAGS32_".$plat."_".$cpu."_".$model." = $LDFLAGS\n";
+            print TGT "WATCOM_DOSLIB_BUILDDIR32_".$plat."_".$cpu."_".$model." = \$\(BUILDDIR\)/$plat/32/$cpu/$model\n";
+
+            print TGT "\n";
+        }
+    }
+
+    print TGT "\n";
+}
+
+close(TGT);
+
