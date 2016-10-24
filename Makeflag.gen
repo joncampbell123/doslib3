@@ -59,6 +59,8 @@ foreach my $plat (qw(dos pc98)) {
             print TGT "WATCOM_DOSLIB_BUILDDIR16_".$plat."_".$cpu."_".$model." = \$\(BUILDDIR\)/$plat/16/$cpu/$model\n";
             print TGT "WATCOM_DOSLIB_LDSYSTEM16 = system dos\n";
 
+            print TGT "# NTS: You can directly code \"system com\" if you want a .COM file instead of the LDSYSTEM16 directive that would make an .EXE\n";
+
             print TGT "\n";
         }
     }
