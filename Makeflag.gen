@@ -13,6 +13,7 @@ print TGT "# \$\(call WATCOM_DOSLIB_CFLAGS16,platform,cpu,model\)\n";
 print TGT "WATCOM_DOSLIB_CFLAGS16 = \$\(WATCOM_DOSLIB_CFLAGS16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
 print TGT "WATCOM_DOSLIB_LDFLAGS16 = \$\(WATCOM_DOSLIB_LDFLAGS16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
 print TGT "WATCOM_DOSLIB_BUILDDIR16 = \$\(WATCOM_DOSLIB_BUILDDIR16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_LDSYSTEM16 = \$\(WATCOM_DOSLIB_LDSYSTEM16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
 print TGT "\n";
 
 # macro
@@ -20,6 +21,7 @@ print TGT "# \$\(call WATCOM_DOSLIB_CFLAGS32,platform,cpu,model\)\n";
 print TGT "WATCOM_DOSLIB_CFLAGS32 = \$\(WATCOM_DOSLIB_CFLAGS32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
 print TGT "WATCOM_DOSLIB_LDFLAGS32 = \$\(WATCOM_DOSLIB_LDFLAGS32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
 print TGT "WATCOM_DOSLIB_BUILDDIR32 = \$\(WATCOM_DOSLIB_BUILDDIR32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_LDSYSTEM32 = \$\(WATCOM_DOSLIB_LDSYSTEM32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
 print TGT "\n";
 
 # DOS targets (PC and PC-98)
@@ -33,7 +35,10 @@ foreach my $plat (qw(dos pc98)) {
         foreach my $model (qw(c s m l h)) {
             # 16-bit
             $CFLAGS="-bt=dos -m$model -DMMODE=$model -DDOSLIB_TARGET_MSDOS=1 -DDOSLIB_TARGET_BITS=16 -DDOSLIB_CPU_TARGET=$singledigit -$singledigit \$\(WATCOM_DOSLIB_INCLUDE\)";
-            $LDFLAGS="system dos";
+            $LDFLAGS="";
+
+            # libpath too
+            $LDFLAGS.=" libpath \$\(BUILDDIR\)/$plat/16/$cpu/$model";
 
             # fpu
             if ($singledigit >= 6) { $CFLAGS.=" -fp6 -fpi"; }
@@ -52,6 +57,7 @@ foreach my $plat (qw(dos pc98)) {
             print TGT "WATCOM_DOSLIB_CFLAGS16_".$plat."_".$cpu."_".$model." = $CFLAGS\n";
             print TGT "WATCOM_DOSLIB_LDFLAGS16_".$plat."_".$cpu."_".$model." = $LDFLAGS\n";
             print TGT "WATCOM_DOSLIB_BUILDDIR16_".$plat."_".$cpu."_".$model." = \$\(BUILDDIR\)/$plat/16/$cpu/$model\n";
+            print TGT "WATCOM_DOSLIB_LDSYSTEM16 = system dos\n";
 
             print TGT "\n";
         }
@@ -66,7 +72,10 @@ foreach my $plat (qw(dos pc98)) {
         foreach my $model (qw(f)) {
             # 32-bit
             $CFLAGS="-bt=dos -m$model -DMMODE=$model -DDOSLIB_TARGET_MSDOS=1 -DDOSLIB_TARGET_BITS=32 -DDOSLIB_CPU_TARGET=$singledigit -$singledigit \$\(WATCOM_DOSLIB_INCLUDE\)";
-            $LDFLAGS="system dos4g";
+            $LDFLAGS="";
+
+            # libpath too
+            $LDFLAGS.=" libpath \$\(BUILDDIR\)/$plat/32/$cpu/$model";
 
             # fpu
             if ($singledigit >= 6) { $CFLAGS.=" -fp6 -fpi"; }
@@ -80,6 +89,7 @@ foreach my $plat (qw(dos pc98)) {
             print TGT "WATCOM_DOSLIB_CFLAGS32_".$plat."_".$cpu."_".$model." = $CFLAGS\n";
             print TGT "WATCOM_DOSLIB_LDFLAGS32_".$plat."_".$cpu."_".$model." = $LDFLAGS\n";
             print TGT "WATCOM_DOSLIB_BUILDDIR32_".$plat."_".$cpu."_".$model." = \$\(BUILDDIR\)/$plat/32/$cpu/$model\n";
+            print TGT "WATCOM_DOSLIB_LDSYSTEM32 = system dos4g\n";
 
             print TGT "\n";
         }
