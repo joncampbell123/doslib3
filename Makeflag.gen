@@ -10,18 +10,18 @@ print TGT "\n";
 
 # macro
 print TGT "# \$\(call WATCOM_DOSLIB_CFLAGS16,platform,cpu,model\)\n";
-print TGT "WATCOM_DOSLIB_CFLAGS16 = \$\(WATCOM_DOSLIB_CFLAGS16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
-print TGT "WATCOM_DOSLIB_LDFLAGS16 = \$\(WATCOM_DOSLIB_LDFLAGS16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
-print TGT "WATCOM_DOSLIB_BUILDDIR16 = \$\(WATCOM_DOSLIB_BUILDDIR16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
-print TGT "WATCOM_DOSLIB_LDSYSTEM16 = \$\(WATCOM_DOSLIB_LDSYSTEM16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_CFLAGS16 = \$\(value WATCOM_DOSLIB_CFLAGS16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_LDFLAGS16 = \$\(value WATCOM_DOSLIB_LDFLAGS16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_BUILDDIR16 = \$\(value WATCOM_DOSLIB_BUILDDIR16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_LDSYSTEM16 = \$\(value WATCOM_DOSLIB_LDSYSTEM16_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
 print TGT "\n";
 
 # macro
 print TGT "# \$\(call WATCOM_DOSLIB_CFLAGS32,platform,cpu,model\)\n";
-print TGT "WATCOM_DOSLIB_CFLAGS32 = \$\(WATCOM_DOSLIB_CFLAGS32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
-print TGT "WATCOM_DOSLIB_LDFLAGS32 = \$\(WATCOM_DOSLIB_LDFLAGS32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
-print TGT "WATCOM_DOSLIB_BUILDDIR32 = \$\(WATCOM_DOSLIB_BUILDDIR32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
-print TGT "WATCOM_DOSLIB_LDSYSTEM32 = \$\(WATCOM_DOSLIB_LDSYSTEM32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_CFLAGS32 = \$\(value WATCOM_DOSLIB_CFLAGS32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_LDFLAGS32 = \$\(value WATCOM_DOSLIB_LDFLAGS32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_BUILDDIR32 = \$\(value WATCOM_DOSLIB_BUILDDIR32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
+print TGT "WATCOM_DOSLIB_LDSYSTEM32 = \$\(value WATCOM_DOSLIB_LDSYSTEM32_\$\(1\)_\$\(2\)_\$\(3\)\)\n";
 print TGT "\n";
 
 # DOS targets (PC and PC-98)
