@@ -37,9 +37,6 @@ foreach my $plat (qw(dos pc98)) {
             $CFLAGS="-bt=dos -m$model -DMMODE=$model -DDOSLIB_TARGET_MSDOS=1 -DDOSLIB_TARGET_BITS=16 -DDOSLIB_CPU_TARGET=$singledigit -$singledigit \$\(WATCOM_DOSLIB_INCLUDE\)";
             $LDFLAGS="";
 
-            # libpath too
-            $LDFLAGS.=" libpath \$\(BUILDDIR\)/$plat/16/$cpu/$model";
-
             # fpu
             if ($singledigit >= 6) { $CFLAGS.=" -fp6 -fpi"; }
             elsif ($singledigit >= 5) { $CFLAGS.=" -fp5 -fpi"; }
@@ -75,9 +72,6 @@ foreach my $plat (qw(dos pc98)) {
             # 32-bit
             $CFLAGS="-bt=dos -m$model -DMMODE=$model -DDOSLIB_TARGET_MSDOS=1 -DDOSLIB_TARGET_BITS=32 -DDOSLIB_CPU_TARGET=$singledigit -$singledigit \$\(WATCOM_DOSLIB_INCLUDE\)";
             $LDFLAGS="";
-
-            # libpath too
-            $LDFLAGS.=" libpath \$\(BUILDDIR\)/$plat/32/$cpu/$model";
 
             # fpu
             if ($singledigit >= 6) { $CFLAGS.=" -fp6 -fpi"; }
