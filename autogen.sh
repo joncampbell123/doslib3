@@ -1,5 +1,4 @@
 #!/bin/bash
-./cleantree
 echo >NEWS
 echo >AUTHORS
 echo >ChangeLog
