@@ -63,9 +63,13 @@ foreach my $plat (qw(dos pc98)) {
             print TGT "WATCOM_DOSLIB_CFLAGS16_".$plat."_".$cpu."_".$model." = $CFLAGS\n";
             print TGT "WATCOM_DOSLIB_LDFLAGS16_".$plat."_".$cpu."_".$model." = $LDFLAGS\n";
             print TGT "WATCOM_DOSLIB_BUILDDIR16_".$plat."_".$cpu."_".$model." = \$\(BUILDDIR\)/$plat/16/$cpu/$model\n";
-            print TGT "WATCOM_DOSLIB_LDSYSTEM16 = system dos\n";
 
-            print TGT "# NTS: You can directly code \"system com\" if you want a .COM file instead of the LDSYSTEM16 directive that would make an .EXE\n";
+            if ($model eq "t") {
+                print TGT "WATCOM_DOSLIB_LDSYSTEM16 = system com\n";
+            }
+            else {
+                print TGT "WATCOM_DOSLIB_LDSYSTEM16 = system dos\n";
+            }
 
             print TGT "\n";
         }
