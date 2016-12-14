@@ -34,10 +34,17 @@ foreach my $plat (qw(dos pc98)) {
         $singledigit = 0 if $singledigit == 80; # FIXME: Didn't I make it an int?
 
         # memory models
-        foreach my $model (qw(c s m l h)) {
-            # 16-bit
-            $CFLAGS="-bt=dos -m$model -DMMODE=$model -DDOSLIB_TARGET_MSDOS=1 -DDOSLIB_TARGET_BITS=16 -DDOSLIB_CPU_TARGET=$singledigit -$singledigit \$\(WATCOM_DOSLIB_INCLUDE\)";
+        foreach my $model (qw(t c s m l h)) {
+            $CFLAGS="-bt=dos -DMMODE=$model -DDOSLIB_TARGET_MSDOS=1 -DDOSLIB_TARGET_BITS=16 -DDOSLIB_CPU_TARGET=$singledigit -$singledigit \$\(WATCOM_DOSLIB_INCLUDE\)";
             $LDFLAGS="";
+
+            if ($model eq "t") {
+                $CFLAGS.=" -ms -D__TINY__ -zdp -zc -g=DGROUP -nt=_TEXT -nc=CODE -zt=65535";
+            }
+            else {
+                $CFLAGS.=" -m$model";
+            }
+            # 16-bit
 
             # fpu
             if ($singledigit >= 6) { $CFLAGS.=" -fp6 -fpi"; }
