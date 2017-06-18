@@ -27,7 +27,7 @@ print TGT "WATCOM_DOSLIB_LDSYSTEM32 = \$\(value WATCOM_DOSLIB_LDSYSTEM32_\$\(cal
 print TGT "\n";
 
 # DOS targets (PC and PC-98)
-foreach my $plat (qw(dos pc98)) {
+foreach my $plat (qw(dosibm dospc98)) {
     # types
     foreach my $type (qw(doscom dosexe dossys dossysexe)) {
         # CPUs
@@ -64,7 +64,7 @@ foreach my $plat (qw(dos pc98)) {
                 $CFLAGS.=" -zu" if ($model eq "l" || $model eq "c");
 
                 # need to say so if PC-98
-                $CFLAGS.=" -DDOSLIB_TARGET_PC98=1" if $plat eq "pc98";
+                $CFLAGS.=" -DDOSLIB_TARGET_PC98=1" if $plat eq "dospc98";
 
                 # emit it
                 print TGT "WATCOM_DOSLIB_CFLAGS16_".$plat."_".$cpu."_".$model."_".$type." = $CFLAGS\n";
@@ -100,7 +100,7 @@ foreach my $plat (qw(dos pc98)) {
                 else { $CFLAGS.=" -fp3 -fpi"; }
 
                 # need to say so if PC-98
-                $CFLAGS.=" -DDOSLIB_TARGET_PC98=1" if $plat eq "pc98";
+                $CFLAGS.=" -DDOSLIB_TARGET_PC98=1" if $plat eq "dospc98";
 
                 # emit it
                 print TGT "WATCOM_DOSLIB_CFLAGS32_".$plat."_".$cpu."_".$model."_".$type." = $CFLAGS\n";
