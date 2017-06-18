@@ -30,8 +30,8 @@ print TGT "\n";
 foreach my $plat (qw(dos pc98)) {
     # CPUs
     foreach my $cpu ((8086,286,386,486,586,686)) {
-        my $singledigit = int($cpu / 100)+0;
-        $singledigit = 0 if $singledigit == 80; # FIXME: Didn't I make it an int?
+        my $singledigit = int($cpu / 100)+0; # 8086 -> 80, 286 -> 2, 386 -> 3, etc.
+        $singledigit = 0 if $singledigit == 80; # but we need 8086 -> 0
 
         # memory models
         foreach my $model (qw(t c s m l h)) {
